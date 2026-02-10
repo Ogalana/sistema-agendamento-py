@@ -205,3 +205,15 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Ignora o arquivo do banco de dados SQLite (Layer 3)
+*.db
+*.db-journal
+
+# Ignora pastas de IDEs (VS Code ou PyCharm)
+.vscode/
+.idea/
+
+# Ignora arquivos de sistema operacional
+.DS_Store
+Thumbs.db
