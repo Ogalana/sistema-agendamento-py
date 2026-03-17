@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Agendamento Profissional</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f0f2f5; 
+            color: #333; 
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 { color: #1a73e8; text-align: center; margin-bottom: 20px; }
+        h2 { color: #5f6368; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+        form { 
+            display: grid; 
+            gap: 15px; 
+            background: #fafafa; 
+            padding: 20px; 
+            border: 1px solid #eee; 
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        input, select, button { 
+            padding: 12px; 
+            border: 1px solid #dadce0; 
+            border-radius: 4px; 
+            font-size: 16px; 
+        }
+
+        button { 
+            background-color: #1a73e8; 
+            color: white; 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+        }
+
+        button:hover { background-color: #1557b0; }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+            border-radius: 8px; 
+            overflow: hidden; 
+        }
+
+        th { 
+            background-color: #1a73e8; 
+            color: white; 
+            text-align: left; 
+            padding: 12px;
+        }
+
+        td { 
+            padding: 12px; 
+            border-bottom: 1px solid #eee; 
+        }
+
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #f1f3f4; }
+
+        .no-data { text-align: center; color: #999; padding: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Sistema de Agendamento</h1>
+
+    <form action="/agendar" method="POST">
+        <h2>Novo Agendamento</h2>
+        <input type="text" name="cliente" placeholder="Nome Completo do Cliente" required>
+        
+        <select name="servico" required>
+            <option value="" disabled selected>Escolha o serviço...</option>
+            <option value="Corte de Cabelo">Corte de Cabelo</option>
+            <option value="Barba">Barba</option>
+            <option value="Manutenção de PC">Manutenção de PC</option>
+            <option value="Consultoria">Consultoria</option>
+        </select>
+
+        <input type="datetime-local" name="horario" required>
+        
+        <button type="submit">Confirmar Agendamento</button>
+    </form>
+
+    <h2>Agendamentos Confirmados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Serviço</th>
+                <th>Horário</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for agendamento in agendamentos %}
+            <tr>
+                <td>{{ agendamento[0] }}</td>
+                <td>{{ agendamento[1] }}</td>
+                <td>{{ agendamento[2].strftime('%d/%m/%Y %H:%M') if agendamento[2] else '' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" class="no-data">Nenhum agendamento encontrado.</td>
+            </tr>
+            {% endfor %} </tbody>
+    </table>
+</div>
+</body>
+</html>
