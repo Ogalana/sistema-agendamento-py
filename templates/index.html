@@ -53,6 +53,21 @@
             transition: background 0.3s; 
         }
 
+        .btn-edit {
+            background-color: #fbbc04; /* Amarelo Google/Atenção */
+            color: #000;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+            }
+
+        .btn-edit:hover {
+            background-color: #e3a600;
+            }
+
         button:hover { background-color: #1557b0; }
 
         table { 
@@ -94,8 +109,8 @@
             <option value="" disabled selected>Escolha o serviço...</option>
             <option value="Corte de Cabelo">Corte de Cabelo</option>
             <option value="Barba">Barba</option>
-            <option value="Manutenção de PC">Manutenção de PC</option>
-            <option value="Consultoria">Consultoria</option>
+            <option value="Sobrancelha">Sobrancelha</option>
+            <option value="Coloração">Coloração</option>
         </select>
 
         <input type="datetime-local" name="horario" required>
@@ -110,18 +125,22 @@
                 <th>Cliente</th>
                 <th>Serviço</th>
                 <th>Horário</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             {% for agendamento in agendamentos %}
             <tr>
-                <td>{{ agendamento[0] }}</td>
                 <td>{{ agendamento[1] }}</td>
-                <td>{{ agendamento[2].strftime('%d/%m/%Y %H:%M') if agendamento[2] else '' }}</td>
+                <td>{{ agendamento[2] }}</td>
+                <td>{{ agendamento[3].strftime('%d/%m/%Y %H:%M') if agendamento[3] else '' }}</td>
+                <td>
+                  <a href="/editar/{{ agendamento[0] }}" class="btn-edit">Editar</a>
+                </td>
             </tr>
             {% else %}
             <tr>
-                <td colspan="3" class="no-data">Nenhum agendamento encontrado.</td>
+                <td colspan="4" class="no-data">Nenhum agendamento encontrado.</td>
             </tr>
             {% endfor %} </tbody>
     </table>
