@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Agendamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Editar Agendamento #{{ agendamento[0] }}</h2>
+        
+        <form method="POST">
+            <input type="text" name="cliente" value="{{ agendamento[1] }}" required>
+            
+            <select name="servico" required>
+                <option value="Corte de Cabelo" {{ 'selected' if agendamento[2] == 'Corte de Cabelo' else '' }}>Corte de Cabelo</option>
+                <option value="Barba" {{ 'selected' if agendamento[2] == 'Barba' else '' }}>Barba</option>
+                <option value="Sobrancelha" {{ 'selected' if agendamento[2] == 'Sobrancelha' else '' }}>Sobrancelha</option>
+                <option value="Coloração" {{ 'selected' if agendamento[2] == 'Coloração' else '' }}>Coloração</option>
+            </select>
+
+            <input type="datetime-local" name="horario" 
+                   value="{{ agendamento[3].strftime('%Y-%m-%dT%H:%M') if agendamento[3] else '' }}" required>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-save">Salvar Alterações</button>
+                <a href="/" class="btn-cancel">Voltar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
