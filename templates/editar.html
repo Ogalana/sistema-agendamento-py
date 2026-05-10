@@ -2,31 +2,132 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Agendamento</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+    }
+
+    h2 {
+        color: #1a73e8;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box; /* Garante que o padding não aumente o tamanho */
+        font-size: 16px;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .btn-save {
+        flex: 2;
+        background-color: #1a73e8;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background 0.3s;
+    }
+
+
+    .btn-save:hover {
+        background-color: #1557b0;
+    }
+
+    .btn-cancel {
+        flex: 1;
+        background-color: #6c757d;
+        color: white;
+        padding: 12px;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background 0.3s;
+    }
+
+    .btn-cancel:hover {
+        background-color: #5a6268;
+    }
+</style>
 </head>
 <body>
     <div class="container">
-        <h2>Editar Agendamento #{{ agendamento[0] }}</h2>
+        <h1 class="logo">Sistema de Agendamento</h1>
         
-        <form method="POST">
-            <input type="text" name="cliente" value="{{ agendamento[1] }}" required>
+        <div class="form-container">
+            <h2>Editar Agendamento #{{ agendamento[0] }}</h2>
             
-            <select name="servico" required>
-                <option value="Corte de Cabelo" {{ 'selected' if agendamento[2] == 'Corte de Cabelo' else '' }}>Corte de Cabelo</option>
-                <option value="Barba" {{ 'selected' if agendamento[2] == 'Barba' else '' }}>Barba</option>
-                <option value="Sobrancelha" {{ 'selected' if agendamento[2] == 'Sobrancelha' else '' }}>Sobrancelha</option>
-                <option value="Coloração" {{ 'selected' if agendamento[2] == 'Coloração' else '' }}>Coloração</option>
-            </select>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <input type="text" name="cliente" value="{{ agendamento[1] }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Serviço</label>
+                    <select name="servico" required>
+                        <option value="Corte de Cabelo" {{ 'selected' if agendamento[2] == 'Corte de Cabelo' else '' }}>Corte de Cabelo</option>
+                        <option value="Barba" {{ 'selected' if agendamento[2] == 'Barba' else '' }}>Barba</option>
+                        <option value="Sobrancelha" {{ 'selected' if agendamento[2] == 'Sobrancelha' else '' }}>Sobrancelha</option>
+                        <option value="Coloração" {{ 'selected' if agendamento[2] == 'Coloração' else '' }}>Coloração</option>
+                    </select>
+                </div>
 
-            <input type="datetime-local" name="horario" 
-                   value="{{ agendamento[3].strftime('%Y-%m-%dT%H:%M') if agendamento[3] else '' }}" required>
-            
-            <div class="button-group">
-                <button type="submit" class="btn-save">Salvar Alterações</button>
-                <a href="/" class="btn-cancel">Voltar</a>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label>Data e Hora</label>
+                    <input type="datetime-local" name="horario" 
+                           value="{{ agendamento[3].strftime('%Y-%m-%dT%H:%M') if agendamento[3] else '' }}" required>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn-save">Salvar Alterações</button>
+                    <a href="/" class="btn-cancel">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

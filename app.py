@@ -64,6 +64,20 @@ def editar(id):
         conn.close()
         return redirect(url_for('index'))
 
+
+@app.route('/deletar/<int:id>')
+def deletar(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    cur.execute("DELETE FROM agendamentos WHERE id = %s", (id,))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+    
+    return redirect(url_for('index'))
+
     cur.execute("SELECT id, cliente, servico, horario FROM agendamentos WHERE id = %s", (id,))
     agendamento = cur.fetchone()
     cur.close()

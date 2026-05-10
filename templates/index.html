@@ -64,6 +64,15 @@
             transition: 0.3s;
             }
 
+        .btn-delete {
+            background-color: #d93025;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-left: 5px;
+            }
+
         .btn-edit:hover {
             background-color: #e3a600;
             }
@@ -135,7 +144,10 @@
                 <td>{{ agendamento[2] }}</td>
                 <td>{{ agendamento[3].strftime('%d/%m/%Y %H:%M') if agendamento[3] else '' }}</td>
                 <td>
-                  <a href="/editar/{{ agendamento[0] }}" class="btn-edit">Editar</a>
+                    <a href="/editar/{{ agendamento[0] }}" class="btn-edit">Editar</a>
+                    <a href="/deletar/{{ agendamento[0] }}" class="btn-delete" onclick="return confirm('Tem certeza que deseja cancelar este agendamento?')">
+                    Excluir
+                </a>
                 </td>
             </tr>
             {% else %}
