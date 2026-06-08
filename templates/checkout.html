@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout da Barbearia</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121214; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .checkout-card { background-color: #202024; padding: 30px; border-radius: 8px; width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-align: center; }
+        h2 { color: #2ec4b6; margin-bottom: 20px; }
+        .info-box { background-color: #121214; padding: 15px; border-radius: 6px; text-align: left; margin-bottom: 20px; border-left: 4px solid #2ec4b6; }
+        .info-box p { margin: 5px 0; }
+        select { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 4px; border: none; background-color: #121214; color: white; font-size: 16px; }
+        .btn-confirm { background-color: #2ec4b6; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-confirm:hover { background-color: #20a497; }
+        
+        /* Estilo do Spinner de Carregamento Simulado */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; flex-direction: column; z-index: 999; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: #2ec4b6; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .overlay p { margin-top: 15px; font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="loadingOverlay" class="overlay">
+        <div class="spinner"></div>
+        <p id="loadingText">Conectando ao banco emissor...</p>
+    </div>
+
+    <div class="checkout-card">
+        <h2>Finalizar Atendimento</h2>
+        
+        <div class="info-box">
+            <p><strong>Cliente:</strong> {{ agendamento[1] }}</p>
+            <p><strong>Serviço:</strong> {{ agendamento[2] }}</p>
+            <p><strong>Total a Pagar:</strong> R$ {{ "%.2f"|format(agendamento[3]) }}</p>
+        </div>
+
+        <form id="paymentForm" action="/processar_pagamento" method="POST">
+            <input type="hidden" name="id" value="{{ agendamento[0] }}">
+            
+            <label for="forma_pagamento">Escolha a Forma de Pagamento:</label>
+            <select name="forma_pagamento" id="forma_pagamento" required>
+                <option value="Pix">Pix (QRCode Dinâmico)</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+                <option value="Dinheiro">Dinheiro físico</option>
+            </select>
+
+            <button type="submit" class="btn-confirm">Confirmar e Processar</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            // 1. Bloqueia o envio imediato do formulário para o Python
+            e.preventDefault(); 
+            
+            const overlay = document.getElementById('loadingOverlay');
+            const loadingText = document.getElementById('loadingText');
+            
+            // 2. Mostra a tela de "Processando..."
+            overlay.style.display = 'flex';
+            
+            // 3. Muda a mensagem no meio do caminho para parecer real
+            setTimeout(() => {
+                loadingText.innerText = "Validando transação e autenticando saldo...";
+            }, 1000);
+
+            // 4. Após 2.5 segundos, libera o formulário para salvar no banco!
+            setTimeout(() => {
+                this.submit(); 
+            }, 2500);
+        });
+    </script>
+</body>
+</html>
